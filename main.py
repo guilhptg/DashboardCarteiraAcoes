@@ -103,11 +103,10 @@ total_final_carteira = sum(carteira)
 
 performace_carteira = (total_final_carteira / total_inicial_carteira) - 1
 
-porcentagem = (valor_investido * performace_ativo)
-total_rendido_reais = valor_investido + porcentagem
+total_rendido_reais = valor_investido + (valor_investido * performace_carteira)
 cor_total_rendido = ":green" if total_rendido_reais >= 0 else (":red" if total_rendido_reais < 0 else ":blue")
 
-texto_total_rendido_reais = f'### Performance da Investimento  \nTotal: {cor_total_rendido}[R$ {total_rendido_reais:.2f}]'
+texto_total_rendido_reais = f'### Performance do Investimento  \nTotal: {cor_total_rendido}[R$ {total_rendido_reais:,.2f}]'
 
 if performace_carteira > 0:
     texto_performace_carteira = f'#### Performace da carteira com todos ativos:  \n:green[{performace_carteira:.2%}]'
