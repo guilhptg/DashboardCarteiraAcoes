@@ -70,7 +70,6 @@ dados = dados.loc[intervalo_datas[0]:intervalo_datas[1]]
 # Gráfico de Linha
 st.line_chart(dados)
 
-
 # Cálculo de Performance
 texto_performace_ativos = ""
 
