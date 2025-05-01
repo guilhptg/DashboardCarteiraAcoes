@@ -59,7 +59,7 @@ print(lista_acoes)
 # Filtro de datas
 data_inicial = dados.index.min().to_pydatetime()
 data_final = dados.index.max().to_pydatetime()
-intervalo_datas = st.sidebar.slider('Selecione o período',
+intervalo_datas = st.sidebar.slider(label='Selecione o período',
                                     min_value=data_inicial, 
                                     max_value=data_final, 
                                     value=(data_inicial, data_final),
