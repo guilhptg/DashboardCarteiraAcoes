@@ -55,10 +55,8 @@ if not lista_acoes:
     st.stop()
 
 dados = carregar_dados(lista_acoes)
-st.write(dados.head())  # ou st.dataframe(dados)
 
 dados = dados[~dados.index.isna()]  # Remove linhas com índice inválido
-
 
 if lista_acoes:
     dados = dados[lista_acoes]
