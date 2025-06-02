@@ -17,7 +17,7 @@ def carregar_dados(empresas):
     DataFrame: DataFrame contendo os preços de fechamento ajustados das ações.
     """
     texto_tickers = " ".join(empresas)
-    dados_acao = yf.Tickers(texto_tickers) # .SA faz referência a bolsa nacional (São Paulo)
+    dados_acao = yf.Tickers(texto_tickers) 
     cotacoes_acao = dados_acao.history(period='1d', start='2010-01-01', end='2025-03-01')
     return cotacoes_acao['Close']
 
@@ -31,13 +31,12 @@ def carregar_tickers_acoes():
     """
     base_tickers = pd.read_csv('IBOV.csv', sep=';')
     tickers = list(base_tickers['Código'])
-    tickers = [item + '.SA' for item in tickers]
+    tickers = [item + '.SA' for item in tickers] # .SA faz referência a bolsa nacional (São Paulo)
     return tickers
 
-# Preparar vizualização
+# Preparar vizualização dos dados 
 
-acoes = carregar_tickers_acoes()
-dados = carregar_dados(acoes)
+acoes_disponiveis = carregar_tickers_acoes()
 
 st.write("""
 # APP Preço de Ações
@@ -47,8 +46,16 @@ O gráfico abaixo representa a evolução do preço das ações ao longo do peri
 # Filtros
 st.sidebar.header('Filtros')
 
-# Filtros de ações
-lista_acoes = st.sidebar.multiselect("Escolha as ações para vizualizar", dados.columns)
+# Filtros de ações disponíveis
+lista_acoes = st.sidebar.multiselect("Escolha as ações para vizualizar", options=acoes_disponiveis, default=['PETR4.SA'])
+
+# Verifica se há alguma ação selecionada
+if not lista_acoes:
+    st.write("### Selecione uma ou mais ações no menu lateral para carregar os dados.")
+    st.stop()
+
+dados = carregar_dados(lista_acoes)
+
 if lista_acoes:
     dados = dados[lista_acoes]
     if len(lista_acoes) == 1:
@@ -70,6 +77,11 @@ dados = dados.loc[intervalo_datas[0]:intervalo_datas[1]]
 # Gráfico de Linha
 st.line_chart(dados)
 
+# Correlações
+if len(lista_acoes) > 2:
+    correlacoes = dados.pct_change().corr()
+    st.dataframe(correlacoes)
+
 # Cálculo de Performance
 texto_performace_ativos = ""
 
@@ -79,7 +91,7 @@ elif len(lista_acoes) == 1:
     dados = dados.rename(columns={'Close': acao_unica})
 
 # Valor Investido no Início do Periodo
-valor_investido = st.sidebar.number_input('Valor Investido (R$)', min_value=1.00)
+valor_investido = st.sidebar.number_input('Valor Investido (R$)', min_value=100.00)
 
 # Carteira / atribuir um valor variável para carteira
 carteira = [valor_investido for acao in lista_acoes]
@@ -102,7 +114,7 @@ total_final_carteira = sum(carteira)
 
 performace_carteira = (total_final_carteira / total_inicial_carteira) - 1
 
-total_rendido_reais = valor_investido + (valor_investido * performace_carteira)
+total_rendido_reais = total_final_carteira
 cor_total_rendido = ":green" if total_rendido_reais >= 0 else (":red" if total_rendido_reais < 0 else ":blue")
 
 texto_total_rendido_reais = f'### Performance do Investimento  \nTotal: {cor_total_rendido}[R$ {total_rendido_reais:,.2f}]'
