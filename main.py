@@ -56,12 +56,19 @@ if not lista_acoes:
 
 dados = carregar_dados(lista_acoes)
 
+dados = dados[~dados.index.isna()]  # Remove linhas com índice inválido
+
+
 if lista_acoes:
     dados = dados[lista_acoes]
     if len(lista_acoes) == 1:
         acao_unica = lista_acoes[0]
         dados = dados.rename(columns={acao_unica: 'Close'})
-print(lista_acoes)
+
+# Verificação datas null
+if dados.empty or dados.index.min() is pd.NaT or dados.index.max() is pd.NaT:
+    st.error("Erro ao determinar as datas válidas. Verifique os dados retornados.")
+    st.stop()
 
 # Filtro de datas
 data_inicial = dados.index.min().to_pydatetime()
@@ -78,7 +85,7 @@ dados = dados.loc[intervalo_datas[0]:intervalo_datas[1]]
 st.line_chart(dados)
 
 # Correlações
-if len(lista_acoes) > 2:
+if len(lista_acoes) >= 2:
     correlacoes = dados.pct_change().corr()
     st.dataframe(correlacoes)
 
