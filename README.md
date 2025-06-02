@@ -48,7 +48,7 @@ Este painel permite:
 
 ```bash
 # Clone o projeto
-git clone https://github.com/seu-usuario/nome-do-repo.git
+git clone https://github.com/guilhptg/DashboardCarteiraAcoes.git
 cd nome-do-repo
 
 # Build da imagem
