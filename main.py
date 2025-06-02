@@ -71,8 +71,8 @@ if lista_acoes:
 #     st.stop()
 
 # Filtro de datas
-data_inicial = dados.index.min().to_pydatetime()
-data_final = dados.index.max().to_pydatetime()
+data_inicial = dados.index.min().date()
+data_final = dados.index.max().date()
 intervalo_datas = st.sidebar.slider(label='Selecione o período',
                                     min_value=data_inicial, 
                                     max_value=data_final, 
