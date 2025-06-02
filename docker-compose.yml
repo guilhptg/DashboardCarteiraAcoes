@@ -6,6 +6,4 @@ services:
     container_name: carteira_acoes_ibov_streamlit
     ports:
       - '8501:8501'
-    volumes:
-      -.:/app
     command: streamlit run main.py --server.port=8501 --server.address=0.0.0.0
