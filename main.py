@@ -66,9 +66,9 @@ if lista_acoes:
         dados = dados.rename(columns={acao_unica: 'Close'})
 
 # Verificação datas null
-if dados.empty or dados.index.min() is pd.NaT or dados.index.max() is pd.NaT:
-    st.error("Erro ao determinar as datas válidas. Verifique os dados retornados.")
-    st.stop()
+# if dados.empty or dados.index.min() is pd.NaT or dados.index.max() is pd.NaT:
+#     st.error("Erro ao determinar as datas válidas. Verifique os dados retornados.")
+#     st.stop()
 
 # Filtro de datas
 data_inicial = dados.index.min().to_pydatetime()
