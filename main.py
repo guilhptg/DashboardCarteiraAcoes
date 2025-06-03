@@ -58,6 +58,7 @@ dados = carregar_dados(lista_acoes)
 
 dados = dados[~dados.index.isna()]  # Remove linhas com índice inválido
 
+
 if lista_acoes:
     dados = dados[lista_acoes]
     if len(lista_acoes) == 1:
